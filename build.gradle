@@ -2,6 +2,7 @@ group 'com.jihangli.projects'
 version '0.1'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
@@ -10,5 +11,11 @@ repositories {
 }
 
 dependencies {
+    compile group: 'us.codecraft', name: 'webmagic-core', version: '0.7.3'
+    compile group: 'us.codecraft', name: 'webmagic-extension', version: '0.7.3'
+
+    // apache common utils
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
