@@ -22,9 +22,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ImageCrawler implements PageProcessor {
 
+    //@TODO: Make these variables configurable through command or UI
     private Site site = Site.me().setRetryTimes(1).setSleepTime(5000).setTimeOut(5000);
-    private static final String WEBPAGE_TO_CRAWL = "http://wanimal1983.org/";
-    private static final String LOCATION_PREFIX = "/Users/jihang/Project/github/wanimalCollection";
+    private static final String WEBPAGE_TO_CRAWL = "http://example.org/";
+    private static final String LOCATION_PREFIX = "/Users/example";
+    private static final String URL_REGEX = "http://example\\.org/page/";
     private static String DATE_TIME;
 
     /**
@@ -40,10 +42,11 @@ public class ImageCrawler implements PageProcessor {
      */
     @Override
     public void process(Page page) {
-        StringBuilder nextPageUrl = new StringBuilder("http://wanimal1983\\.org/page/");
+        StringBuilder nextPageUrl = new StringBuilder(URL_REGEX);
 
         try {
             nextPageUrl.append(getCurrentPageNumber(page) + 1);
+            System.out.println("adding a new page to task queue: " + nextPageUrl);
         } catch (Exception e) {
             System.out.println("error" + e.getMessage());
             return;
@@ -101,7 +104,6 @@ public class ImageCrawler implements PageProcessor {
      */
     public void downLoadPics(List<String> imgUrls) throws Exception {
         String dir = LOCATION_PREFIX + "_" + DATE_TIME;
-        System.out.println("dir is:" + dir);
 
         for (int counter = 1; counter < imgUrls.size(); counter++) {
             URL url = new URL(imgUrls.get(counter));
@@ -113,7 +115,6 @@ public class ImageCrawler implements PageProcessor {
             FileOutputStream fos = new FileOutputStream(new File(newImageName));
             byte[] buffer = new byte[1024];
             int length;
-            System.out.println("正在下载......第 " + counter + " 张图片.");
 
             while ((length = dis.read(buffer)) > 0) {
                 fos.write(buffer, 0, length);
